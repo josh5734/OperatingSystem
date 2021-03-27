@@ -39,15 +39,23 @@
   * 4. Interrupt를 받은 CPU는 현재 실행 중인 프로세스를 멈추고, 커널 모드로 돌아가 Interrupt를 Handling한다.
   * 5. 이후에 이전 프로세스를 다시 Ready 상태로 돌려놓는다.
 
-### 5. Process Switching
+### 5. Mode Switching
+* 이전 정리글에서도 언급했던 것 같은데, User-Kernel Mode Switching은 세 가지 상황에서 일어난다.
+ * 1. Hardware Externel interrupt(Timer, I/O Interrupt)
+ * 2. Software Exception(Page fault, invalid operations..)
+ * 3. System Call(I/O Operation, fort()..)
+
+* #### Mode Switching의 과정
+  * **1. 현재 프로세서의 상태를 저장한다.** 
+  * 2. 프로그램 카운터를 다음 작업을 할 주소값으로 세팅한다.
+  * 3. 커널 모드로 전환하여 수행해야 하는 Instruction을 핸들링할수 있도록 한다.  
+
+
+### 6. Process Switching
 * 사실 Process State를 변환하면서 Process Switching을 하는 과정은 상당히 복잡하다. 진행 중이던 프로세스의 상태를 기록하고, 불러오는 프로세스의 이전 상태를 복원해야 한다. 또한 각 프로세스를 저장할 큐의 메모리 위치를 선점하는 등의 작업이 필요하다.
 * 한편, Process Switching은 Mode Switching과는 구분되는 개념이다. 이전 자료에서 공부했던 것처럼 Mode switching은 User mode, Kernel mode를 변환하는 과정이지만, Process switching은 프로세스의 상태를 변화시키는 과정 전체를 의미하는 것이다.
 
 
-* #### Mode Switching의 과정
-  * 1. 현재 프로세서의 상태를 저장한다.
-  * 2. 프로그램 카운터를 다음 작업을 할 주소값으로 세팅한다.
-  * 3. 커널 모드로 전환하여 수행해야 하는 Instruction을 핸들링할수 있도록 한다.  
 * #### Process Swtiching의 과정
   * 0. **Process switching은 Mode Switching의 결과로 발생한다!** 다시 말해서, 앞에서 배운 Interrupt, Exception, System Call이 일어나면 Process swtiching이 일어나는 것이 아니라 Mode Swtiching이 일어나는 것이다.
   * 1. Process Switching이 일어나면 우선 현재 프로그램 컨텍스트(Program context)를 저장한다.
